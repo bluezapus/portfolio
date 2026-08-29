@@ -8,10 +8,10 @@ User=www-data
 Group=www-data
 
 # Project directory
-WorkingDirectory=/opt/portfolio
+WorkingDirectory=/var/www/portfolio
 
 # Use the project's virtualenv interpreter.
-Environment=PATH=/opt/portfolio/venv/bin:/usr/bin:/bin
+Environment=PATH=/var/www/portfolio/venv/bin:/usr/bin:/bin
 Environment=SECRET_KEY=__CHANGE_ME_TO_A_LONG_RANDOM_STRING__
 Environment=FLASK_DEBUG=false
 Environment=MAX_UPLOAD_MB=5
@@ -20,9 +20,9 @@ Environment=GUNICORN_WORKERS=2
 Environment=GUNICORN_THREADS=2
 
 # Bind to the venv's gunicorn executable.
-ExecStart=/opt/portfolio/venv/bin/gunicorn \
-    --config /opt/portfolio/gunicorn.conf.py \
-    --chdir /opt/portfolio \
+ExecStart=/var/www/portfolio/venv/bin/gunicorn \
+    --config /var/www/portfolio/gunicorn.conf.py \
+    --chdir /var/www/portfolio \
     run:app
 
 # Restart on failure, but cap restart storms.
@@ -33,10 +33,10 @@ RestartSec=5
 NoNewPrivileges=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/opt/portfolio/instance /opt/portfolio/uploads
+ReadWritePaths=/var/www/portfolio/instance /var/www/portfolio/uploads
 PrivateTmp=true
 # SQLite + uploads need write access; everything else read-only.
-ReadOnlyPaths=/opt/portfolio
+ReadOnlyPaths=/var/www/portfolio
 
 [Install]
 WantedBy=multi-user.target
