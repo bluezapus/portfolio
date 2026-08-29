@@ -328,6 +328,7 @@ portfolio/
     }
 
 ```
+> change to
 ```
     # Uploaded media (admin-managed images + books).
     location /uploads/ {
