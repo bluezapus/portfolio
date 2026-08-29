@@ -310,6 +310,48 @@ portfolio/
 └── README.md
 ```
 
+
+## Troubleshooting
+
+`sudo nano /etc/nginx/sites-available/portfolio`
+
+```
+    # Uploaded media (admin-managed images + books).
+    location /uploads/ {
+        alias /var/www/portfolio/uploads/;
+        expires 7d;
+        add_header Cache-Control "public";
+        access_log off;
+        # Never execute anything from uploads; serve as static only.
+        types { }
+        default_type application/octet-stream;
+    }
+
+```
+```
+    # Uploaded media (admin-managed images + books).
+    location /uploads/ {
+        alias /var/www/portfolio/uploads/;
+        expires 7d;
+        add_header Cache-Control "public";
+        access_log off;
+
+        types {
+            application/pdf                      pdf;
+            image/png                            png;
+            image/jpeg                           jpg jpeg;
+            image/gif                            gif;
+            image/webp                           webp;
+            image/svg+xml                        svg;
+        }
+        default_type application/octet-stream;
+
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header Content-Security-Policy "frame-ancestors 'self'" always;
+    }
+
+```
+
 ---
 
 ## License
