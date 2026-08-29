@@ -1,0 +1,68 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Appearance{% endblock %}
+{% block title %}Appearance{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="card-body">
+    {# Live preview updates the CSS variables in this card without persistence #}
+    <div class="appearance-preview" id="appearancePreview">
+      <div class="preview-card">
+        <h3>Preview</h3>
+        <p>This is how cards and buttons will look with the chosen theme.</p>
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-ghost">Accent</button>
+        <span class="skill-chip">Chip</span>
+      </div>
+    </div>
+
+    <form method="post" action="{{ url_for('admin.appearance') }}" enctype="multipart/form-data" class="form" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="color-grid">
+        <div class="field">{{ form.primary_color.label }}{{ form.primary_color(class="color-input") }}{% for e in form.primary_color.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+        <div class="field">{{ form.accent_color.label }}{{ form.accent_color(class="color-input") }}{% for e in form.accent_color.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+        <div class="field">{{ form.background_color.label }}{{ form.background_color(class="color-input") }}{% for e in form.background_color.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+        <div class="field">{{ form.card_color.label }}{{ form.card_color(class="color-input") }}{% for e in form.card_color.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+        <div class="field">{{ form.text_color.label }}{{ form.text_color(class="color-input") }}{% for e in form.text_color.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+        <div class="field">{{ form.muted_color.label }}{{ form.muted_color(class="color-input") }}{% for e in form.muted_color.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      </div>
+      <div class="field">{{ form.border_radius.label }}{{ form.border_radius(min=0, max=32) }}{% for e in form.border_radius.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.logo.label }}{{ form.logo() }}<span class="muted small">Optional logo (PNG/SVG).</span></div>
+      <div class="field">
+        {{ form.submit(class="btn btn-primary") }}
+        <form method="post" action="{{ url_for('admin.appearance_reset') }}" class="inline-form">
+          {% if csrf_token %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endif %}
+          <button class="btn btn-ghost" type="submit">Reset Default</button>
+        </form>
+        <a class="btn btn-ghost" href="{{ url_for('public.home') }}" target="_blank" rel="noopener">Preview ↗</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Lightweight preview: reflect color inputs onto the preview card live.
+  (function () {
+    const fields = ['primary_color','accent_color','background_color','card_color','text_color','muted_color','border_radius'];
+    const preview = document.getElementById('appearancePreview');
+    if (!preview) return;
+    const inputs = {};
+    fields.forEach(function (f) { inputs[f] = document.querySelector('[name="'+f+'"]'); });
+    function apply() {
+      const v = {};
+      fields.forEach(function (f) { v[f] = inputs[f] ? inputs[f].value : ''; });
+      preview.style.setProperty('--primary', v.primary_color);
+      preview.style.setProperty('--accent', v.accent_color);
+      preview.style.setProperty('--background', v.background_color);
+      preview.style.setProperty('--card', v.card_color);
+      preview.style.setProperty('--text', v.text_color);
+      preview.style.setProperty('--muted', v.muted_color);
+      preview.style.setProperty('--radius', (v.border_radius || 8) + 'px');
+    }
+    fields.forEach(function (f) { if (inputs[f]) inputs[f].addEventListener('input', apply); });
+    apply();
+  })();
+</script>
+{% endblock %}

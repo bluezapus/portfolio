@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Messages{% endblock %}
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+{% if messages %}
+<table class="data-table">
+  <thead><tr><th>From</th><th>Subject</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for m in messages %}
+      <tr class="{% if not m.read %}unread-row{% endif %}">
+        <td>{{ m.name }}</td>
+        <td><a href="{{ url_for('admin.message_detail', id=m.id) }}">{{ m.subject }}</a></td>
+        <td>{{ m.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>{% if m.read %}<span class="badge ok">read</span>{% else %}<span class="badge off">new</span>{% endif %}</td>
+        <td class="row-actions">
+          <a class="btn btn-sm btn-ghost" href="{{ url_for('admin.message_detail', id=m.id) }}">View</a>
+          <form method="post" action="{{ url_for('admin.message_delete', id=m.id) }}" class="inline-form" onsubmit="return confirm('Delete message?');">{% if csrf_token %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endif %}<button class="btn btn-sm btn-danger" type="submit">Delete</button></form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if pagination.pages > 1 %}
+<nav class="pager" aria-label="Pagination">
+  {% if pagination.has_prev %}<a class="btn btn-ghost" href="{{ url_for('admin.messages', page=pagination.prev_num) }}">← Prev</a>{% endif %}
+  <span class="muted">Page {{ pagination.page }} of {{ pagination.pages }}</span>
+  {% if pagination.has_next %}<a class="btn btn-ghost" href="{{ url_for('admin.messages', page=pagination.next_num) }}">Next →</a>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<p class="muted">No messages yet.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ seo_title or settings.site_name }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ seo_description or settings.site_description }}{% endblock %}">
+  <meta name="author" content="{{ settings.site_name }}">
+
+  {# Open Graph #}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ settings.site_name }}">
+  <meta property="og:title" content="{% block og_title %}{{ seo_title or settings.site_name }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ seo_description or settings.site_description }}{% endblock %}">
+  <meta property="og:url" content="{% block canonical %}{{ request.url }}{% endblock %}">
+  {% if settings.favicon %}<link rel="icon" href="{{ url_for('public.uploaded_file', filename=settings.favicon) }}">{% else %}<link rel="icon" href="{{ url_for('static', filename='images/favicon.svg') }}">{% endif %}
+
+  {# Theme via CSS variables — safe because values are rendered by Jinja, not user HTML #}
+  <style>
+    :root {
+      --primary: {{ settings.primary_color }};
+      --accent: {{ settings.accent_color }};
+      --background: {{ settings.background_color }};
+      --card: {{ settings.card_color }};
+      --text: {{ settings.text_color }};
+      --muted: {{ settings.muted_color }};
+      --radius: {{ settings.border_radius }}px;
+    }
+  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="{{ url_for('public.home') }}">
+        {% if settings.logo %}<img src="{{ url_for('public.uploaded_file', filename=settings.logo) }}" alt="Logo" class="brand-logo">{% endif %}
+        <span>{{ settings.site_name }}</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="{{ url_for('public.home') }}">Home</a>
+        <a href="{{ url_for('public.about') }}">About</a>
+        <a href="{{ url_for('public.projects') }}">Projects</a>
+        <a href="{{ url_for('public.writeups') }}">Write-ups</a>
+        <a href="{{ url_for('public.books') }}">Books</a>
+        <a href="{{ url_for('public.contact') }}">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container main-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for cat, msg in messages %}
+            <div class="alert alert-{{ cat }}" role="status">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© {{ year }} {{ settings.site_name }}. Built with Flask.</p>
+      <p class="muted">Secure &amp; lightweight cybersecurity portfolio.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

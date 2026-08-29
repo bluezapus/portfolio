@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="card-body">
+    <form method="post" action="" enctype="multipart/form-data" class="form" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="field">{{ form.title.label }}{{ form.title() }}{% for e in form.title.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.slug.label }}{{ form.slug(placeholder="auto from title") }}<span class="muted small">Leave blank to auto-generate.</span>{% for e in form.slug.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.short_description.label }}{{ form.short_description() }}{% for e in form.short_description.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.full_description.label }}{{ form.full_description(rows=8) }}{% for e in form.full_description.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.category.label }}{{ form.category() }}{% for e in form.category.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.technologies.label }}{{ form.technologies(placeholder="Nmap, Wireshark, ...") }}{% for e in form.technologies.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.github_url.label }}{{ form.github_url() }}{% for e in form.github_url.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.demo_url.label }}{{ form.demo_url() }}{% for e in form.demo_url.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.image.label }}{{ form.image() }}<span class="muted small">Max {{ config.MAX_UPLOAD_MB }} MB.</span></div>
+      <div class="field checkbox">{{ form.featured() }} {{ form.featured.label }}</div>
+      <div class="field checkbox">{{ form.published() }} {{ form.published.label }}</div>
+      <div class="field">{{ form.submit(class="btn btn-primary") }}</div>
+    </form>
+  </div>
+</section>
+{% endblock %}

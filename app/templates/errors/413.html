@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}File Too Large{% endblock %}
+{% block content %}
+<section class="section center">
+  <h1 class="page-title">413</h1>
+  <p class="muted">The file you uploaded is too large. Max upload size is {{ config.MAX_UPLOAD_MB }} MB.</p>
+  <a class="btn btn-primary" href="javascript:history.back()">Go back</a>
+</section>
+{% endblock %}

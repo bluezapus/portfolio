@@ -1,0 +1,26 @@
+{% extends "admin/base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="card-body">
+    <form method="post" action="" enctype="multipart/form-data" class="form" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="field">{{ form.title.label }}{{ form.title() }}{% for e in form.title.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.slug.label }}{{ form.slug(placeholder="auto from title") }}<span class="muted small">Leave blank to auto-generate.</span>{% for e in form.slug.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.author.label }}{{ form.author() }}{% for e in form.author.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.category.label }}{{ form.category(placeholder="e.g. Linux, SOC, CTF") }}{% for e in form.category.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.description.label }}{{ form.description(rows=4) }}{% for e in form.description.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.cover_image.label }}{{ form.cover_image() }}<span class="muted small">Cover image. Max {{ config.MAX_UPLOAD_MB }} MB.</span>{% for e in form.cover_image.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.pdf.label }}{{ form.pdf() }}<span class="muted small">PDF file only. Max 10 MB.</span>{% for e in form.pdf.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.display_order.label }}{{ form.display_order() }}</div>
+      <div class="field checkbox">{{ form.published() }} {{ form.published.label }}</div>
+      <div class="field">{{ form.submit(class="btn btn-primary") }}</div>
+    </form>
+    {% if book and book.pdf_path %}
+      <p class="muted small">Current PDF: <a href="{{ url_for('public.uploaded_file', filename=book.pdf_path) }}" target="_blank" rel="noopener">{{ book.pdf_path }}</a></p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

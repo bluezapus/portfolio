@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Profile{% endblock %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="card-body">
+    <form method="post" action="{{ url_for('admin.profile') }}" enctype="multipart/form-data" class="form" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="field">{{ form.full_name.label }}{{ form.full_name() }}{% for e in form.full_name.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.title.label }}{{ form.title() }}{% for e in form.title.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.subtitle.label }}{{ form.subtitle() }}{% for e in form.subtitle.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.description.label }}{{ form.description(rows=5) }}{% for e in form.description.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.location.label }}{{ form.location() }}{% for e in form.location.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.email.label }}{{ form.email() }}{% for e in form.email.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.cv_url.label }}{{ form.cv_url() }}{% for e in form.cv_url.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.profile_image.label }}{{ form.profile_image() }}<span class="muted small">Max {{ config.MAX_UPLOAD_MB }} MB. PNG/JPG/GIF/WebP.</span></div>
+      <div class="field">{{ form.submit(class="btn btn-primary") }}</div>
+    </form>
+  </div>
+</section>
+{% endblock %}

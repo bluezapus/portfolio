@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Environment & secrets
+.env
+
+# Database
+instance/portfolio.db
+instance/*.db
+*.sqlite
+*.sqlite3
+
+# Uploads (user-generated; keep out of VCS)
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+
+# gunicorn temp
+gunicorn.pid

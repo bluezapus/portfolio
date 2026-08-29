@@ -1,0 +1,2 @@
+# Keep uploads dir in git (contents are gitignored).
+.placeholder

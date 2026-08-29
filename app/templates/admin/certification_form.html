@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="card"><div class="card-body">
+  <form method="post" action="" class="form" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="field">{{ form.name.label }}{{ form.name() }}{% for e in form.name.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field">{{ form.organization.label }}{{ form.organization() }}{% for e in form.organization.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field">{{ form.date.label }}{{ form.date() }}{% for e in form.date.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field">{{ form.credential_url.label }}{{ form.credential_url() }}{% for e in form.credential_url.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field">{{ form.description.label }}{{ form.description(rows=3) }}{% for e in form.description.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field">{{ form.display_order.label }}{{ form.display_order() }}{% for e in form.display_order.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field">{{ form.submit(class="btn btn-primary") }}</div>
+  </form>
+</div></section>
+{% endblock %}

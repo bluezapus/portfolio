@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="card-body">
+    <form method="post" action="" enctype="multipart/form-data" class="form" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="field">{{ form.title.label }}{{ form.title() }}{% for e in form.title.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.slug.label }}{{ form.slug(placeholder="auto from title") }}<span class="muted small">Leave blank to auto-generate.</span>{% for e in form.slug.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.summary.label }}{{ form.summary(rows=3) }}{% for e in form.summary.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.content.label }}{{ form.content(rows=14, placeholder="Supports # headings, **bold**, `code`, - lists, [links](url), > quotes") }}{% for e in form.content.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.category.label }}{{ form.category(placeholder="HTB / SOC / Network / Linux / Pentest / CTF") }}{% for e in form.category.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.tags.label }}{{ form.tags(placeholder="ctf, linux, privesc") }}{% for e in form.tags.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.cover_image.label }}{{ form.cover_image() }}<span class="muted small">Max {{ config.MAX_UPLOAD_MB }} MB.</span></div>
+      <div class="field">{{ form.status.label }}{{ form.status() }}{% for e in form.status.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.submit(class="btn btn-primary") }}</div>
+    </form>
+  </div>
+</section>
+{% endblock %}

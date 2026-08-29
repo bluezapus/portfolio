@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="section book-detail" data-book-open
+         data-title="{{ book.title }}"
+         data-pdf="{{ url_for('public.uploaded_file', filename=book.pdf_path) }}"
+         data-author="{{ book.author or '' }}">
+  {% if book.cover_image %}
+    <img class="detail-cover" src="{{ url_for('public.uploaded_file', filename=book.cover_image) }}" alt="{{ book.title }} cover">
+  {% endif %}
+  <h1 class="page-title">{{ book.title }}</h1>
+  {% if book.author %}<p class="muted">by {{ book.author }}</p>{% endif %}
+  {% if book.category %}<span class="tag">{{ book.category }}</span>{% endif %}
+
+  <div class="detail-body">
+    {% if book.description %}<p>{{ book.description }}</p>{% endif %}
+  </div>
+
+  <div class="card-links detail-links">
+    <button class="btn btn-primary book-open-btn" type="button">Read PDF →</button>
+    <a class="btn btn-ghost" href="{{ url_for('public.uploaded_file', filename=book.pdf_path) }}" target="_blank" rel="noopener">Download</a>
+  </div>
+
+  <p><a href="{{ url_for('public.books') }}">← Back to reading room</a></p>
+</article>
+
+<div class="reader-modal" id="readerModal" role="dialog" aria-modal="true" aria-labelledby="readerTitle" hidden>
+  <div class="reader-backdrop" data-book-close></div>
+  <div class="reader-panel">
+    <header class="reader-bar">
+      <h2 id="readerTitle" class="reader-title"></h2>
+      <div class="reader-actions">
+        <a class="btn btn-sm btn-ghost" id="readerDownload" target="_blank" rel="noopener">Download</a>
+        <button class="btn btn-sm btn-ghost" type="button" data-book-close aria-label="Close reader">✕ Close</button>
+      </div>
+    </header>
+    <iframe id="readerFrame" class="reader-frame" title="PDF reader"></iframe>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/books.js') }}" defer></script>
+{% endblock %}

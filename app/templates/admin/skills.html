@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Skills{% endblock %}
+{% block title %}Skills{% endblock %}
+
+{% block content %}
+<div class="toolbar">
+  <a class="btn btn-primary" href="{{ url_for('admin.skill_new') }}">+ Add Skill</a>
+</div>
+
+{% if skills %}
+<table class="data-table">
+  <thead><tr><th>Category</th><th>Name</th><th>Order</th><th>Status</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for s in skills %}
+      <tr>
+        <td>{{ s.category }}</td>
+        <td>{{ s.name }}</td>
+        <td>{{ s.display_order }}</td>
+        <td>{% if s.enabled %}<span class="badge ok">on</span>{% else %}<span class="badge off">off</span>{% endif %}</td>
+        <td class="row-actions">
+          <form method="post" action="{{ url_for('admin.skill_toggle', id=s.id) }}" class="inline-form">{% if csrf_token %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endif %}<button class="btn btn-sm btn-ghost" type="submit">Toggle</button></form>
+          <a class="btn btn-sm btn-ghost" href="{{ url_for('admin.skill_edit', id=s.id) }}">Edit</a>
+          <form method="post" action="{{ url_for('admin.skill_delete', id=s.id) }}" class="inline-form" onsubmit="return confirm('Delete this skill?');">{% if csrf_token %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endif %}<button class="btn btn-sm btn-danger" type="submit">Delete</button></form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No skills yet.</p>
+{% endif %}
+{% endblock %}

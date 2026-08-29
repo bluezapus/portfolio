@@ -1,0 +1,26 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Experience{% endblock %}
+{% block title %}Experience{% endblock %}
+
+{% block content %}
+<div class="toolbar"><a class="btn btn-primary" href="{{ url_for('admin.experience_new') }}">+ Add Experience</a></div>
+{% if items %}
+<table class="data-table">
+  <thead><tr><th>Company</th><th>Position</th><th>Period</th><th>Order</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for e in items %}
+      <tr>
+        <td>{{ e.company }}</td>
+        <td>{{ e.position }}</td>
+        <td>{{ e.start_date }} – {{ e.end_date or 'Present' }}</td>
+        <td>{{ e.display_order }}</td>
+        <td class="row-actions">
+          <a class="btn btn-sm btn-ghost" href="{{ url_for('admin.experience_edit', id=e.id) }}">Edit</a>
+          <form method="post" action="{{ url_for('admin.experience_delete', id=e.id) }}" class="inline-form" onsubmit="return confirm('Delete?');">{% if csrf_token %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endif %}<button class="btn btn-sm btn-danger" type="submit">Delete</button></form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}<p class="muted">No experience entries.</p>{% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+  <h1 class="page-title">Projects</h1>
+  {% if projects %}
+    <div class="grid grid-3">
+      {% for p in projects %}
+        <article class="card project-card">
+          {% if p.image %}<img class="card-img" src="{{ url_for('public.uploaded_file', filename=p.image) }}" alt="{{ p.title }} preview">{% endif %}
+          <div class="card-body">
+            <h3><a href="{{ url_for('public.project_detail', slug=p.slug) }}">{{ p.title }}</a></h3>
+            <p class="muted">{{ p.short_description }}</p>
+            {% if p.category %}<span class="tag">{{ p.category }}</span>{% endif %}
+            <div class="card-links">
+              {% if p.github_url %}<a href="{{ p.github_url }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
+              {% if p.demo_url %}<a href="{{ p.demo_url }}" target="_blank" rel="noopener">Demo</a>{% endif %}
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if pagination.pages > 1 %}
+      <nav class="pager" aria-label="Pagination">
+        {% if pagination.has_prev %}<a class="btn btn-ghost" href="{{ url_for('public.projects', page=pagination.prev_num) }}">← Prev</a>{% endif %}
+        <span class="muted">Page {{ pagination.page }} of {{ pagination.pages }}</span>
+        {% if pagination.has_next %}<a class="btn btn-ghost" href="{{ url_for('public.projects', page=pagination.next_num) }}">Next →</a>{% endif %}
+      </nav>
+    {% endif %}
+  {% else %}
+    <p class="muted">No projects published yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Server Error{% endblock %}
+{% block content %}
+<section class="section center">
+  <h1 class="page-title">500</h1>
+  <p class="muted">Something went wrong on our side. The issue has been logged.</p>
+  <a class="btn btn-primary" href="{{ url_for('public.home') }}">Home</a>
+</section>
+{% endblock %}

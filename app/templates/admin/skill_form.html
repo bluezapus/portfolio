@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="card-body">
+    <form method="post" action="" class="form" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="field">{{ form.category.label }}{{ form.category() }}{% for e in form.category.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.name.label }}{{ form.name() }}{% for e in form.name.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field checkbox">{{ form.enabled() }} {{ form.enabled.label }}</div>
+      <div class="field">{{ form.display_order.label }}{{ form.display_order() }}{% for e in form.display_order.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+      <div class="field">{{ form.submit(class="btn btn-primary") }}</div>
+    </form>
+  </div>
+</section>
+{% endblock %}

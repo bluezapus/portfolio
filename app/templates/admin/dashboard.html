@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Dashboard{% endblock %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="stat-grid">
+  <div class="stat-card"><span class="stat-num">{{ counts.projects }}</span><span class="stat-label">Projects</span></div>
+  <div class="stat-card"><span class="stat-num">{{ counts.published_projects }}</span><span class="stat-label">Published</span></div>
+  <div class="stat-card"><span class="stat-num">{{ counts.writeups }}</span><span class="stat-label">Write-ups</span></div>
+  <div class="stat-card"><span class="stat-num">{{ counts.skills }}</span><span class="stat-label">Skills</span></div>
+  <div class="stat-card"><span class="stat-num">{{ counts.experience }}</span><span class="stat-label">Experience</span></div>
+  <div class="stat-card"><span class="stat-num">{{ counts.certs }}</span><span class="stat-label">Certs</span></div>
+  <div class="stat-card"><span class="stat-num">{{ counts.unread }}</span><span class="stat-label">Unread msgs</span></div>
+</div>
+
+<section class="card">
+  <div class="card-body">
+    <h2>Recent Messages</h2>
+    {% if recent_messages %}
+      <ul class="msg-list">
+        {% for m in recent_messages %}
+          <li>
+            <a href="{{ url_for('admin.message_detail', id=m.id) }}">
+              <strong>{{ m.name }}</strong> — {{ m.subject[:40] }}
+              {% if not m.read %}<span class="dot-unread" title="Unread"></span>{% endif %}
+            </a>
+            <span class="muted small">{{ m.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No messages yet.</p>
+    {% endif %}
+  </div>
+</section>
+
+<div class="quick-actions">
+  <a class="btn btn-primary" href="{{ url_for('admin.profile') }}">Edit Profile</a>
+  <a class="btn btn-ghost" href="{{ url_for('admin.appearance') }}">Customize Appearance</a>
+  <a class="btn btn-ghost" href="{{ url_for('admin.project_new') }}">New Project</a>
+  <a class="btn btn-ghost" href="{{ url_for('admin.writeup_new') }}">New Write-up</a>
+</div>
+{% endblock %}

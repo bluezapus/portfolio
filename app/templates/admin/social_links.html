@@ -1,0 +1,26 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Social Links{% endblock %}
+{% block title %}Social Links{% endblock %}
+
+{% block content %}
+<div class="toolbar"><a class="btn btn-primary" href="{{ url_for('admin.social_link_new') }}">+ Add Link</a></div>
+{% if items %}
+<table class="data-table">
+  <thead><tr><th>Label</th><th>URL</th><th>Enabled</th><th>Order</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for s in items %}
+      <tr>
+        <td>{{ s.label }}</td>
+        <td><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.url }}</a></td>
+        <td>{% if s.enabled %}<span class="badge ok">on</span>{% else %}<span class="badge off">off</span>{% endif %}</td>
+        <td>{{ s.display_order }}</td>
+        <td class="row-actions">
+          <a class="btn btn-sm btn-ghost" href="{{ url_for('admin.social_link_edit', id=s.id) }}">Edit</a>
+          <form method="post" action="{{ url_for('admin.social_link_delete', id=s.id) }}" class="inline-form" onsubmit="return confirm('Delete?');">{% if csrf_token %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endif %}<button class="btn btn-sm btn-danger" type="submit">Delete</button></form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}<p class="muted">No links.</p>{% endif %}
+{% endblock %}

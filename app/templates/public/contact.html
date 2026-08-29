@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "public/macros.html" import social_links_inline %}
+
+{% block content %}
+<section class="section narrow">
+  <h1 class="page-title">Contact</h1>
+  <p class="muted">Send a message. It is stored securely and reviewed from the admin dashboard.</p>
+
+  <form method="post" action="{{ url_for('public.contact') }}" class="form" novalidate>
+    {{ form.hidden_tag() }}
+
+    <div class="field">
+      {{ form.name.label }}
+      {{ form.name(autocomplete="name", aria_label="Your name") }}
+      {% for e in form.name.errors %}<span class="error">{{ e }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+      {{ form.email.label }}
+      {{ form.email(autocomplete="email", aria_label="Your email") }}
+      {% for e in form.email.errors %}<span class="error">{{ e }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+      {{ form.subject.label }}
+      {{ form.subject(autocomplete="off") }}
+      {% for e in form.subject.errors %}<span class="error">{{ e }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+      {{ form.message.label }}
+      {{ form.message(rows=6, aria_label="Your message") }}
+      {% for e in form.message.errors %}<span class="error">{{ e }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+      {{ form.submit(class="btn btn-primary") }}
+    </div>
+  </form>
+
+  {% if socials %}{{ social_links_inline(socials) }}{% endif %}
+</section>
+{% endblock %}

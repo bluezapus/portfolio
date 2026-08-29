@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="section project-detail">
+  {% if project.image %}
+    <img class="detail-cover" src="{{ url_for('public.uploaded_file', filename=project.image) }}" alt="{{ project.title }} cover">
+  {% endif %}
+  <h1 class="page-title">{{ project.title }}</h1>
+  <p class="muted">{{ project.short_description }}</p>
+  {% if project.category %}<span class="tag">{{ project.category }}</span>{% endif %}
+
+  <div class="detail-body">
+    {% if project.full_description %}<p>{{ project.full_description }}</p>{% endif %}
+  </div>
+
+  {% if project.technologies %}
+    <h3>Technologies</h3>
+    <div class="skill-cloud">
+      {% for t in project.technologies.split(',') %}<span class="skill-chip">{{ t.strip() }}</span>{% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="card-links detail-links">
+    {% if project.github_url %}<a class="btn btn-primary" href="{{ project.github_url }}" target="_blank" rel="noopener">View on GitHub</a>{% endif %}
+    {% if project.demo_url %}<a class="btn btn-ghost" href="{{ project.demo_url }}" target="_blank" rel="noopener">Live Demo</a>{% endif %}
+  </div>
+
+  <p><a href="{{ url_for('public.projects') }}">← Back to projects</a></p>
+</article>
+{% endblock %}

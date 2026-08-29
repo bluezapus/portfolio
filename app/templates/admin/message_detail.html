@@ -1,0 +1,21 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Message{% endblock %}
+{% block title %}Message{% endblock %}
+
+{% block content %}
+<section class="card"><div class="card-body">
+  <h2>{{ message.subject }}</h2>
+  <p class="muted">
+    From <strong>{{ message.name }}</strong> &lt;{{ message.email }}&gt;<br>
+    {{ message.created_at.strftime('%Y-%m-%d %H:%M') }}
+  </p>
+  <hr>
+  <p class="msg-body">{{ message.message }}</p>
+  <div class="toolbar">
+    <form method="post" action="{{ url_for('admin.message_toggle', id=message.id) }}" class="inline-form">{% if csrf_token %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endif %}<button class="btn btn-ghost" type="submit">Mark {{ 'unread' if message.read else 'read' }}</button></form>
+    <a class="btn btn-ghost" href="mailto:{{ message.email }}?subject=Re: {{ message.subject }}">Reply by email</a>
+    <form method="post" action="{{ url_for('admin.message_delete', id=message.id) }}" class="inline-form" onsubmit="return confirm('Delete?');">{% if csrf_token %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endif %}<button class="btn btn-danger" type="submit">Delete</button></form>
+    <a class="btn btn-ghost" href="{{ url_for('admin.messages') }}">← Back</a>
+  </div>
+</div></section>
+{% endblock %}

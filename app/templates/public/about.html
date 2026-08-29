@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% from "public/macros.html" import social_links_inline %}
+
+{% block content %}
+<section class="section">
+  <h1 class="page-title">About</h1>
+  <div class="about-grid">
+    <div>
+      {% if profile.profile_image %}
+        <img class="about-img" src="{{ url_for('public.uploaded_file', filename=profile.profile_image) }}" alt="Photo of {{ profile.full_name }}">
+      {% endif %}
+      <p class="lead">{{ profile.description }}</p>
+      <ul class="meta-list">
+        {% if profile.location %}<li><strong>Location:</strong> {{ profile.location }}</li>{% endif %}
+        {% if profile.email %}<li><strong>Email:</strong> <a href="mailto:{{ profile.email }}">{{ profile.email }}</a></li>{% endif %}
+      </ul>
+      {{ social_links_inline(socials) }}
+    </div>
+
+    <div>
+      <h2>Skills</h2>
+      {% for cat, items in skills.items() %}
+        <h3 class="skill-cat">{{ cat }}</h3>
+        <div class="skill-cloud">
+          {% for sk in items %}<span class="skill-chip">{{ sk.name }}</span>{% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if experience %}
+<section class="section">
+  <h2 class="section-title">Experience</h2>
+  <ol class="timeline">
+    {% for e in experience %}
+      <li class="timeline-item">
+        <div class="timeline-marker" aria-hidden="true"></div>
+        <div class="timeline-body card">
+          <h3>{{ e.position }} — <span class="accent">{{ e.company }}</span></h3>
+          <p class="muted">{{ e.start_date }} – {{ e.end_date or 'Present' }}</p>
+          <p>{{ e.description }}</p>
+          {% if e.technologies %}<p class="tech">{{ e.technologies }}</p>{% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ol>
+</section>
+{% endif %}
+
+{% if certs %}
+<section class="section">
+  <h2 class="section-title">Certifications &amp; Achievements</h2>
+  <div class="grid grid-2">
+    {% for c in certs %}
+      <article class="card">
+        <div class="card-body">
+          <h3>{{ c.name }}</h3>
+          <p class="muted">{{ c.organization }} · {{ c.date }}</p>
+          <p>{{ c.description }}</p>
+          {% if c.credential_url %}<a class="btn btn-ghost" href="{{ c.credential_url }}" target="_blank" rel="noopener">Verify →</a>{% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

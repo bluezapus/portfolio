@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% from "public/macros.html" import icon, social_links_inline %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow">// portfolio</p>
+      <h1>{{ profile.full_name }}</h1>
+      <h2 class="hero-title">{{ profile.title }}{% if profile.subtitle %} | {{ profile.subtitle }}{% endif %}</h2>
+      <p class="hero-desc">{{ profile.description }}</p>
+
+      <div class="hero-actions">
+        {% if profile.cv_url %}<a class="btn btn-primary" href="{{ profile.cv_url }}" target="_blank" rel="noopener">Download CV</a>{% endif %}
+        {% if profile.email %}<a class="btn btn-ghost" href="{{ url_for('public.contact') }}">Contact Me</a>{% endif %}
+      </div>
+
+      {{ social_links_inline(socials) }}
+    </div>
+
+    <div class="hero-avatar">
+      {% if profile.profile_image %}
+        <img src="{{ url_for('public.uploaded_file', filename=profile.profile_image) }}" alt="Profile photo of {{ profile.full_name }}">
+      {% else %}
+        <div class="avatar-placeholder" aria-hidden="true">{{ profile.full_name[:1] }}</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% if featured %}
+<section class="section">
+  <h2 class="section-title">Featured Projects</h2>
+  <div class="grid grid-3">
+    {% for p in featured %}
+      <article class="card project-card">
+        {% if p.image %}<img class="card-img" src="{{ url_for('public.uploaded_file', filename=p.image) }}" alt="{{ p.title }} preview">{% endif %}
+        <div class="card-body">
+          <h3><a href="{{ url_for('public.project_detail', slug=p.slug) }}">{{ p.title }}</a></h3>
+          <p class="muted">{{ p.short_description }}</p>
+          {% if p.category %}<span class="tag">{{ p.category }}</span>{% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  <div class="center"><a class="btn btn-ghost" href="{{ url_for('public.projects') }}">All Projects →</a></div>
+</section>
+{% endif %}
+
+{% if writeups %}
+<section class="section">
+  <h2 class="section-title">Latest Write-ups</h2>
+  <div class="grid grid-3">
+    {% for w in writeups %}
+      <article class="card writeup-card">
+        <div class="card-body">
+          <span class="tag">{{ w.category }}</span>
+          <h3><a href="{{ url_for('public.writeup_detail', slug=w.slug) }}">{{ w.title }}</a></h3>
+          <p class="muted">{{ w.summary }}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  <div class="center"><a class="btn btn-ghost" href="{{ url_for('public.writeups') }}">All Write-ups →</a></div>
+</section>
+{% endif %}
+
+{% if skills %}
+<section class="section">
+  <h2 class="section-title">Skills</h2>
+  {% for cat, items in skills.items() %}
+    <h3 class="skill-cat">{{ cat }}</h3>
+    <div class="skill-cloud">
+      {% for sk in items %}<span class="skill-chip">{{ sk.name }}</span>{% endfor %}
+    </div>
+  {% endfor %}
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="card"><div class="card-body">
+  <form method="post" action="" class="form" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="field">{{ form.label.label }}{{ form.label() }}{% for e in form.label.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field">{{ form.url.label }}{{ form.url() }}{% for e in form.url.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field">{{ form.icon.label }}{{ form.icon(placeholder="github / linkedin / htb / link") }}{% for e in form.icon.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field checkbox">{{ form.enabled() }} {{ form.enabled.label }}</div>
+    <div class="field">{{ form.display_order.label }}{{ form.display_order() }}{% for e in form.display_order.errors %}<span class="error">{{ e }}</span>{% endfor %}</div>
+    <div class="field">{{ form.submit(class="btn btn-primary") }}</div>
+  </form>
+</div></section>
+{% endblock %}

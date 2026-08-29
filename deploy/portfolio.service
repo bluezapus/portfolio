@@ -1,0 +1,42 @@
+[Unit]
+Description=Cybersecurity Portfolio (Gunicorn + Flask)
+After=network.target
+
+[Service]
+# Run as an unprivileged user. Do NOT run as root.
+User=www-data
+Group=www-data
+
+# Project directory
+WorkingDirectory=/opt/portfolio
+
+# Use the project's virtualenv interpreter.
+Environment=PATH=/opt/portfolio/venv/bin:/usr/bin:/bin
+Environment=SECRET_KEY=__CHANGE_ME_TO_A_LONG_RANDOM_STRING__
+Environment=FLASK_DEBUG=false
+Environment=MAX_UPLOAD_MB=5
+Environment=SITE_URL=https://yourdomain.com
+Environment=GUNICORN_WORKERS=2
+Environment=GUNICORN_THREADS=2
+
+# Bind to the venv's gunicorn executable.
+ExecStart=/opt/portfolio/venv/bin/gunicorn \
+    --config /opt/portfolio/gunicorn.conf.py \
+    --chdir /opt/portfolio \
+    run:app
+
+# Restart on failure, but cap restart storms.
+Restart=on-failure
+RestartSec=5
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/portfolio/instance /opt/portfolio/uploads
+PrivateTmp=true
+# SQLite + uploads need write access; everything else read-only.
+ReadOnlyPaths=/opt/portfolio
+
+[Install]
+WantedBy=multi-user.target

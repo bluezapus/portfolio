@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Books{% endblock %}
+{% block title %}Books{% endblock %}
+
+{% block content %}
+<div class="toolbar">
+  <a class="btn btn-primary" href="{{ url_for('admin.book_new') }}">+ New Book</a>
+</div>
+
+{% if books %}
+<table class="data-table">
+  <thead><tr><th>Title</th><th>Author</th><th>Category</th><th>PDF</th><th>Published</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for b in books %}
+      <tr>
+        <td><a href="{{ url_for('public.book_detail', slug=b.slug) }}" target="_blank" rel="noopener">{{ b.title }}</a></td>
+        <td>{{ b.author or "—" }}</td>
+        <td>{{ b.category }}</td>
+        <td>{% if b.pdf_path %}<span class="badge ok">yes</span>{% else %}<span class="badge off">no</span>{% endif %}</td>
+        <td>{% if b.published %}<span class="badge ok">yes</span>{% else %}<span class="badge off">no</span>{% endif %}</td>
+        <td class="row-actions">
+          <a class="btn btn-sm btn-ghost" href="{{ url_for('admin.book_edit', id=b.id) }}">Edit</a>
+          <form method="post" action="{{ url_for('admin.book_delete', id=b.id) }}" class="inline-form" onsubmit="return confirm('Delete book?');">{% if csrf_token %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endif %}<button class="btn btn-sm btn-danger" type="submit">Delete</button></form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No books yet. Click "New Book" to upload a PDF.</p>
+{% endif %}
+{% endblock %}
