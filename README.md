@@ -352,6 +352,10 @@ portfolio/
     }
 
 ```
+```
+nginx -t
+systemctl reload nginx
+```
 
 ---
 
